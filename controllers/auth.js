@@ -1,12 +1,12 @@
 const {request , response, } = require('express')
 const bcrypt = require('bcrypt');
-const Users = require('../model/Users');
+const User = require('../model/Users');
 const {generalToken} = require('../helpers/jwt')
 
 const createUser = async (req = request , res = response) => {
     try {
     const {email , password} = req.body
-    let user = await Users.findOne({email})
+    let user = await User.findOne({email})
 
     if(user) {
         return res.status(400).json({
@@ -15,7 +15,7 @@ const createUser = async (req = request , res = response) => {
         })
     }
 
-    user = new Users(req.body)
+    user = new User(req.body)
 
     const salt = bcrypt.genSaltSync()
     user.password =  bcrypt.hashSync(password , salt)
@@ -43,13 +43,13 @@ const createUser = async (req = request , res = response) => {
 
 const loginUser = async (req = request , res = response) => {
     
-    try {
-        const {email , password } = req.body
+    const {email , password } = req.body
 
-        const user = await Users.findOne({email})
+    try {
+        const user = await User.findOne({email})
     
         if(!user) {
-            return res.status(401).json({
+            return res.status(400).json({
                 ok : false,
                 mgs : 'Email no register'
             })
@@ -58,7 +58,7 @@ const loginUser = async (req = request , res = response) => {
         const validaPassword = bcrypt.compareSync(password , user.password )
 
         if(!validaPassword) {
-            return res.status(401).json({
+            return res.status(400).json({
                 ok : false,
                 mgs : 'Password incorret'
             })
@@ -71,7 +71,6 @@ const loginUser = async (req = request , res = response) => {
             uuid : user.id,
             name : user.name,
             token
-            
         })
 
     } catch (error) {
@@ -93,7 +92,9 @@ const revalidarToken = async (req = request , res = response) => {
 
     res.json({
         ok: true,
-        token
+        token,
+        uuid,
+        name
     })
 
    } catch (error) {
