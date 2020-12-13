@@ -11,7 +11,7 @@ const createUser = async (req = request , res = response) => {
     if(user) {
         return res.status(400).json({
             ok : false,
-            mgs : 'Email alredy user'
+            msg : 'Email alredy user'
         })
     }
 
@@ -35,7 +35,7 @@ const createUser = async (req = request , res = response) => {
         console.log(error);
         return res.status(500).json({
             ok : false,
-            mgs : 'Comuniquese con soporte tecnico'
+            msg : 'Comuniquese con soporte tecnico'
         })
     }
 }
@@ -60,7 +60,7 @@ const loginUser = async (req = request , res = response) => {
         if(!validaPassword) {
             return res.status(400).json({
                 ok : false,
-                mgs : 'Password incorret'
+                msg : 'Password incorret'
             })
         }
 
@@ -77,7 +77,7 @@ const loginUser = async (req = request , res = response) => {
         console.log(error);
         return res.status(500).json({
             ok : false,
-            mgs : 'Comuniquese con soporte tecnico'
+            msg : 'Comuniquese con soporte tecnico'
         })
     }
 }
@@ -101,7 +101,7 @@ const revalidarToken = async (req = request , res = response) => {
        console.log(error);
         return res.status(500).json({
             ok : false,
-            mgs : 'Comuniquese con soporte tecnico'
+            msg : 'Comuniquese con soporte tecnico'
         })
    }
 
